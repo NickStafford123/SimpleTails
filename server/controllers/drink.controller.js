@@ -66,6 +66,35 @@ exports.getDrinksById = async (req,res) =>{   //will get a drink bassed off its 
     }
 }
 
+// updatebyid 
+exports.updateDrinkById = async (req, res) =>{
+    try {
+        const {name, recipe, liquor, picture} = req.body
+
+        if (!req.auth || !req.auth.userId){  //handles autherization to make a create request, user must be logged in
+            return res.status(403).send('User not authorized')
+        }
+
+        let updateData = { name, recipe, liquor }
+
+        if (req.file){
+            updateData.picture = req.file.path
+        }
+
+        const updateDrink = await Drink.findByIdAndUpdate(req.params.id, updateData, { new:true })
+
+        if (!updatedDrink){
+            return res.status(404).send('Drink not found')
+        }
+
+        res.status(200).json(updateDrink)
+        console.log(res.statusCode)
+    } catch(err) {
+        console.log(err)
+        res.status(500).send('Server error while updating drink')
+    }
+}
+
 exports.deleteDrinkById = async (req, res) =>{
     try{
         const drink = await Drink.findByIdAndDelete(req.params.id)

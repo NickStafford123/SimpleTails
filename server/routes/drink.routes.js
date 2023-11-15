@@ -14,6 +14,6 @@ router.get('/:id', isAuthenticated, drinkController.getDrinksById)
 
 router.delete('/:id', isAuthenticated, drinkController.deleteDrinkById)
 
-// router.put('/:id', upload, isAuthenticated, drinkController.) // needs to be added still 
+router.put('/:id', upload, isAuthenticated, drinkController.updateDrinkById) // needs to be added still 
 
 module.exports = router
